@@ -2,7 +2,7 @@
 import { h } from "preact";
 import { tw } from "@twind";
 
-export function Header() {
+export default function Header() {
   return (
     <div class={tw`h-20 bg-yellow-400 flex items-center`}>
       <img
