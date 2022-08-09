@@ -1,9 +1,11 @@
 /** @jsx h */
 import { h } from "preact";
 import { tw } from "@twind";
-import { Header } from "../components/Header.tsx";
 import { Handlers, PageProps } from "$fresh/server.ts";
 import { useState } from "preact/hooks";
+
+import Header from "../components/Header.tsx";
+import IconInfo from "../components/IconInfo.tsx";
 
 const decoder = new TextDecoder();
 
@@ -16,7 +18,7 @@ interface ComposeProject {
 export const handler: Handlers<ComposeProject[]> = {
   async GET(_, ctx) {
     const process = Deno.run({
-      cmd: ["docker", "compose", "ls", "-a"],
+      cmd: ["docker", "compose", "ls", "-a", "--format", "json"],
       stderr: "piped",
       stdout: "piped",
     });
@@ -28,34 +30,19 @@ export const handler: Handlers<ComposeProject[]> = {
     }
 
     // Get the output of the command
-    const output = decoder.decode(await process.output());
+    const output = JSON.parse(decoder.decode(await process.output()));
 
-    // Split the table style output into an array divided by the whitespace and linebreak.
-    const separatedOutput = output.split(/( {2,})|\n|\r/);
+    // Create clean objects from the JSON output.
+    const projects: ComposeProject[] = output.map(
+      (project: Record<string, never>) => {
+        return {
+          name: project?.Name,
+          state: project?.Status,
+          configPath: project?.ConfigFiles,
+        };
+      },
+    );
 
-    // Remove any whitespace and linebreaks from the split array.
-    const cleanedOutput = separatedOutput.filter((item) => {
-      // Remove non string items
-      if (typeof item !== "string" || item.length == 0) return;
-
-      // Remove spaces and whitespace
-      if (item.match(/( {1,})|\n|\r/) === null) {
-        return ctx.render([]);
-      }
-      return;
-    });
-
-    // Create storage for the about to be created projects
-    const projects: ComposeProject[] = [];
-
-    // Create projects using the data from the parsed docker compose command.
-    for (let i = 2; i < cleanedOutput.length; i += 3) {
-      projects.push({
-        name: cleanedOutput[i],
-        state: cleanedOutput[i + 1],
-        configPath: cleanedOutput[i + 2],
-      });
-    }
     return ctx.render(projects);
   },
 };
@@ -81,7 +68,9 @@ function Project(props: { project: ComposeProject }) {
         class={tw`bg-white shadow-md rounded-xl p-7 m-2 bg-clip-padding border border-gray-200 truncate hover:-translate-y-0.5 cursor-pointer block`}
         href={`/project/${project.name}`}
       >
-        <p class={tw`float-right font-thin`}>{project.state}</p>
+        <p class={tw`float-right font-thin`}>
+          <IconInfo /> {project.state}
+        </p>
         <h1 class={tw`pb-1`}>
           <span>Name:</span> {project.name}
         </h1>
