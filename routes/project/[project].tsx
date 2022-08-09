@@ -1,3 +1,5 @@
+// deno-lint-ignore-file no-explicit-any
+
 /** @jsx h */
 import { h } from "preact";
 import { Handlers, PageProps } from "$fresh/server.ts";
