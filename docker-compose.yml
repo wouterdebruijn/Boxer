@@ -1,0 +1,13 @@
+version: "3"
+
+services:
+  smokeping:
+    image: boxer:latest
+    container_name: boxer
+    restart: always
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - "8000:8000"
+    environment:
+      GID: 956
