@@ -168,13 +168,11 @@ export default function Home({ data }: PageProps<Container>) {
               <li>MaximumRetryCount: <pre class={tw`inline`}>{data.restartPolicy.maximumRetryCount}</pre></li>
               <li>CPUCount: <pre class={tw`inline`}>{data.cpuCount}</pre></li>
               <li>CPUPercent: <pre class={tw`inline`}>{data.cpuPercent}</pre></li>
-              <ul>
                 {data.networkSettings.networks.map((network) => (
                   <li>
-                    {network.name}: {network.ipAddress}
+                    {network.name}: <pre class={tw`inline`}>IP: {network.ipAddress} Gateway: {network.gateway}</pre>
                   </li>
                 ))}
-              </ul>
             </ul>
           </a>
         </div>
