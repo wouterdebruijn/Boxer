@@ -97,7 +97,7 @@ function Container({ container }: { container: DockerContainer }) {
   return (
     <div class={tw`w-full xl:w-1/2`}>
       <a
-        class={tw`bg-white shadow-md rounded-xl p-7 m-2 bg-clip-padding border border-gray-200 truncate block`}
+        class={tw`bg-white shadow-md rounded-xl p-7 m-2 bg-clip-padding border border-gray-200 block`}
         href={`/project/${container.project}/${container.id}`}
       >
         <p class={tw`float-right font-thin`}>
@@ -106,11 +106,15 @@ function Container({ container }: { container: DockerContainer }) {
         <h1 class={tw`pb-1`}>
           Container: {container.name} {container.health ? "(healthy)" : ""}
         </h1>
-        <div class={tw`block`}>
-          <small class={tw`text-gray-500 font-thin leading-tight block`}>
+        <div>
+          <small
+            class={tw`text-gray-500 font-thin leading-tight block truncate`}
+          >
             ID: {container.id}
           </small>
-          <small class={tw`text-gray-500 font-thin leading-tight block`}>
+          <small
+            class={tw`text-gray-500 font-thin leading-tight block truncate`}
+          >
             Command: {container.command}
           </small>
         </div>

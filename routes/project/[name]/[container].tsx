@@ -114,7 +114,9 @@ export const handler: Handlers<any> = {
   },
 };
 
-function formatNetworks(networks: Record<string, Record<string, string>>): DockerNetwork[] {
+function formatNetworks(
+  networks: Record<string, Record<string, string>>,
+): DockerNetwork[] {
   const result: DockerNetwork[] = [];
   Object.keys(networks).every((key) => {
     result.push({
@@ -136,7 +138,7 @@ export default function Home({ data }: PageProps<Container>) {
       <div class={tw`flex flex-wrap mx-3`}>
         <div class={tw`w-full`}>
           <a
-            class={tw`bg-white shadow-md rounded-xl p-7 m-2 bg-clip-padding border border-gray-200 truncate cursor-pointer block`}
+            class={tw`bg-white shadow-md rounded-xl p-7 m-2 bg-clip-padding border border-gray-200 cursor-pointer block`}
           >
             <small class={tw`float-right text-gray-500 font-thin`}>
               {data.id}
@@ -144,28 +146,28 @@ export default function Home({ data }: PageProps<Container>) {
             <h1 class={tw`pb-1`}>
               <span>Name:</span> {data.name}
             </h1>
-            <ul>
-              <li>Image: {data.config.image}</li>
-              <li>Created: {data.created.toLocaleString()}</li>
-              <li>Path: {data.path}</li>
-              <li>Args: {data.args.join(", ")}</li>
-              <li>State: {data.state.status}</li>
-              <li>Running: {data.state.running ? "Yes" : "No"}</li>
-              <li>Paused: {data.state.paused ? "Yes" : "No"}</li>
-              <li>Restarting: {data.state.restarting ? "Yes" : "No"}</li>
-              <li>OOMKilled: {data.state.oomKilled ? "Yes" : "No"}</li>
-              <li>Dead: {data.state.dead ? "Yes" : "No"}</li>
-              <li>PID: {data.state.pid}</li>
-              <li>ExitCode: {data.state.exitCode}</li>
-              <li>Error: {data.state.error}</li>
-              <li>StartedAt: {data.state.startedAt.toLocaleString()}</li>
-              <li>FinishedAt: {data.state.finishedAt.toLocaleString()}</li>
-              <li>RestartCount: {data.restartCount}</li>
-              <li>Platform: {data.platform}</li>
-              <li>RestartPolicy: {data.restartPolicy.name}</li>
-              <li>MaximumRetryCount: {data.restartPolicy.maximumRetryCount}</li>
-              <li>CPUCount: {data.cpuCount}</li>
-              <li>CPUPercent: {data.cpuPercent}</li>
+            <ul class={tw`font-thin text-sm space-y-2 break-all`}>
+              <li>Image: <pre class={tw`inline`}>{data.config.image}</pre></li>
+              <li>Created: <pre class={tw`inline`}>{data.created.toLocaleString()}</pre></li>
+              <li>Path: <pre class={tw`inline`}>{data.path}</pre></li>
+              <li>Args: <pre class={tw`inline`}>{data.args.join(", ")}</pre></li>
+              <li>State: <pre class={tw`inline`}>{data.state.status}</pre></li>
+              <li>Running: <pre class={tw`inline`}>{data.state.running ? "Yes" : "No"}</pre></li>
+              <li>Paused: <pre class={tw`inline`}>{data.state.paused ? "Yes" : "No"}</pre></li>
+              <li>Restarting: <pre class={tw`inline`}>{data.state.restarting ? "Yes" : "No"}</pre></li>
+              <li>OOMKilled: <pre class={tw`inline`}>{data.state.oomKilled ? "Yes" : "No"}</pre></li>
+              <li>Dead: <pre class={tw`inline`}>{data.state.dead ? "Yes" : "No"}</pre></li>
+              <li>PID: <pre class={tw`inline`}>{data.state.pid}</pre></li>
+              <li>ExitCode: <pre class={tw`inline`}>{data.state.exitCode}</pre></li>
+              <li>Error: <pre class={tw`inline`}>{data.state.error}</pre></li>
+              <li>StartedAt: <pre class={tw`inline`}>{data.state.startedAt.toLocaleString()}</pre></li>
+              <li>FinishedAt: <pre class={tw`inline`}>{data.state.finishedAt.toLocaleString()}</pre></li>
+              <li>RestartCount: <pre class={tw`inline`}>{data.restartCount}</pre></li>
+              <li>Platform: <pre class={tw`inline`}>{data.platform}</pre></li>
+              <li>RestartPolicy: <pre class={tw`inline`}>{data.restartPolicy.name}</pre></li>
+              <li>MaximumRetryCount: <pre class={tw`inline`}>{data.restartPolicy.maximumRetryCount}</pre></li>
+              <li>CPUCount: <pre class={tw`inline`}>{data.cpuCount}</pre></li>
+              <li>CPUPercent: <pre class={tw`inline`}>{data.cpuPercent}</pre></li>
               <ul>
                 {data.networkSettings.networks.map((network) => (
                   <li>

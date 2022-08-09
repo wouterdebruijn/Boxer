@@ -65,7 +65,7 @@ function Project(props: { project: ComposeProject }) {
   return (
     <div class={tw`w-full md:w-1/2 xl:w-4/12`}>
       <a
-        class={tw`bg-white shadow-md rounded-xl p-7 m-2 bg-clip-padding border border-gray-200 truncate hover:-translate-y-0.5 cursor-pointer block`}
+        class={tw`bg-white shadow-md rounded-xl p-7 m-2 bg-clip-padding border border-gray-200 hover:-translate-y-0.5 cursor-pointer block truncate`}
         href={`/project/${project.name}`}
       >
         <p class={tw`float-right font-thin`}>
@@ -74,7 +74,7 @@ function Project(props: { project: ComposeProject }) {
         <h1 class={tw`pb-1`}>
           <span>Name:</span> {project.name}
         </h1>
-        <small class={tw`text-gray-500 font-thin`}>
+        <small class={tw`text-gray-500 font-thin truncate block`}>
           {project.configPath}
         </small>
       </a>
