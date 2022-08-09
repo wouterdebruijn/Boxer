@@ -68,8 +68,11 @@ export const handler: Handlers<any> = {
     const status = await process.status();
 
     if (!status.success) {
-      console.error(decoder.decode(await process.stderrOutput()));
-      return new Response("Command returned an error.");
+      console.error(
+        `Error while executing process: ${process.pid}`,
+        decoder.decode(await process.stderrOutput()),
+      );
+      return ctx.render(null);
     }
 
     // Get the output of the command
@@ -131,7 +134,11 @@ function formatNetworks(
   return result;
 }
 
-export default function Home({ data }: PageProps<Container>) {
+export default function Home({ data }: PageProps<Container | null>) {
+  if (!data) {
+    return <div>Container not found</div>;
+  }
+
   return (
     <div>
       <Header />
@@ -235,12 +242,16 @@ export default function Home({ data }: PageProps<Container>) {
                 CPUPercent: <pre class={tw`inline`}>{data.cpuPercent}</pre>
               </li>
               {data.networkSettings.networks.map((network) => (
-                <li>
-                  {network.name}:{" "}
-                  <pre class={tw`inline`}>
-                    IP: {network.ipAddress} Gateway: {network.gateway}
-                  </pre>
-                </li>
+                network.ipAddress
+                  ? (
+                    <li>
+                      {network.name}:{" "}
+                      <pre class={tw`inline`}>
+                        IP: {network.ipAddress} Gateway: {network.gateway}
+                      </pre>
+                    </li>
+                  )
+                  : null
               ))}
             </ul>
           </a>

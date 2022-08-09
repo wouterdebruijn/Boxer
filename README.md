@@ -18,7 +18,7 @@ Then boxer can be run directly or inside of a docker container.
 ### Docker
 
 ```bash
-docker run -it -p 8080:8080 -v /var/run/docker.sock:/var/run/docker.sock boxer
+docker run -p 8000:8000 -v /var/run/docker.sock:/var/run/docker.sock boxer
 ```
 
 ### Deno
