@@ -66,8 +66,11 @@ export const handler: Handlers<any> = {
     const status = await process.status();
 
     if (!status.success) {
-      console.error(decoder.decode(await process.stderrOutput()));
-      return new Response("Command returned an error.");
+      console.error(
+        `Error while executing process: ${process.pid}`,
+        decoder.decode(await process.stderrOutput()),
+      );
+      return ctx.render(null);
     }
 
     // Get the output of the command
@@ -129,7 +132,11 @@ function formatNetworks(
   return result;
 }
 
-export default function Home({ data }: PageProps<Container>) {
+export default function Home({ data }: PageProps<Container | null>) {
+  if (!data) {
+    return <div>Container not found</div>;
+  }
+
   return (
     <div>
       <Header />
@@ -147,32 +154,103 @@ export default function Home({ data }: PageProps<Container>) {
               <span>Name:</span> {data.name}
             </h1>
             <ul class={tw`font-thin text-sm space-y-2 break-all`}>
-              <li>Image: <pre class={tw`inline`}>{data.config.image}</pre></li>
-              <li>Created: <pre class={tw`inline`}>{data.created.toLocaleString()}</pre></li>
-              <li>Path: <pre class={tw`inline`}>{data.path}</pre></li>
-              <li>Args: <pre class={tw`inline`}>{data.args.join(", ")}</pre></li>
-              <li>State: <pre class={tw`inline`}>{data.state.status}</pre></li>
-              <li>Running: <pre class={tw`inline`}>{data.state.running ? "Yes" : "No"}</pre></li>
-              <li>Paused: <pre class={tw`inline`}>{data.state.paused ? "Yes" : "No"}</pre></li>
-              <li>Restarting: <pre class={tw`inline`}>{data.state.restarting ? "Yes" : "No"}</pre></li>
-              <li>OOMKilled: <pre class={tw`inline`}>{data.state.oomKilled ? "Yes" : "No"}</pre></li>
-              <li>Dead: <pre class={tw`inline`}>{data.state.dead ? "Yes" : "No"}</pre></li>
-              <li>PID: <pre class={tw`inline`}>{data.state.pid}</pre></li>
-              <li>ExitCode: <pre class={tw`inline`}>{data.state.exitCode}</pre></li>
-              <li>Error: <pre class={tw`inline`}>{data.state.error}</pre></li>
-              <li>StartedAt: <pre class={tw`inline`}>{data.state.startedAt.toLocaleString()}</pre></li>
-              <li>FinishedAt: <pre class={tw`inline`}>{data.state.finishedAt.toLocaleString()}</pre></li>
-              <li>RestartCount: <pre class={tw`inline`}>{data.restartCount}</pre></li>
-              <li>Platform: <pre class={tw`inline`}>{data.platform}</pre></li>
-              <li>RestartPolicy: <pre class={tw`inline`}>{data.restartPolicy.name}</pre></li>
-              <li>MaximumRetryCount: <pre class={tw`inline`}>{data.restartPolicy.maximumRetryCount}</pre></li>
-              <li>CPUCount: <pre class={tw`inline`}>{data.cpuCount}</pre></li>
-              <li>CPUPercent: <pre class={tw`inline`}>{data.cpuPercent}</pre></li>
-                {data.networkSettings.networks.map((network) => (
-                  <li>
-                    {network.name}: <pre class={tw`inline`}>IP: {network.ipAddress} Gateway: {network.gateway}</pre>
-                  </li>
-                ))}
+              <li>
+                Image: <pre class={tw`inline`}>{data.config.image}</pre>
+              </li>
+              <li>
+                Created:{" "}
+                <pre class={tw`inline`}>{data.created.toLocaleString()}</pre>
+              </li>
+              <li>
+                Path: <pre class={tw`inline`}>{data.path}</pre>
+              </li>
+              <li>
+                Args: <pre class={tw`inline`}>{data.args.join(", ")}</pre>
+              </li>
+              <li>
+                State: <pre class={tw`inline`}>{data.state.status}</pre>
+              </li>
+              <li>
+                Running:{" "}
+                <pre class={tw`inline`}>
+                  {data.state.running ? "Yes" : "No"}
+                </pre>
+              </li>
+              <li>
+                Paused:{" "}
+                <pre class={tw`inline`}>{data.state.paused ? "Yes" : "No"}</pre>
+              </li>
+              <li>
+                Restarting:{" "}
+                <pre class={tw`inline`}>
+                  {data.state.restarting ? "Yes" : "No"}
+                </pre>
+              </li>
+              <li>
+                OOMKilled:{" "}
+                <pre class={tw`inline`}>
+                  {data.state.oomKilled ? "Yes" : "No"}
+                </pre>
+              </li>
+              <li>
+                Dead:{" "}
+                <pre class={tw`inline`}>{data.state.dead ? "Yes" : "No"}</pre>
+              </li>
+              <li>
+                PID: <pre class={tw`inline`}>{data.state.pid}</pre>
+              </li>
+              <li>
+                ExitCode: <pre class={tw`inline`}>{data.state.exitCode}</pre>
+              </li>
+              <li>
+                Error: <pre class={tw`inline`}>{data.state.error}</pre>
+              </li>
+              <li>
+                StartedAt:{" "}
+                <pre class={tw`inline`}>
+                  {data.state.startedAt.toLocaleString()}
+                </pre>
+              </li>
+              <li>
+                FinishedAt:{" "}
+                <pre class={tw`inline`}>
+                  {data.state.finishedAt.toLocaleString()}
+                </pre>
+              </li>
+              <li>
+                RestartCount: <pre class={tw`inline`}>{data.restartCount}</pre>
+              </li>
+              <li>
+                Platform: <pre class={tw`inline`}>{data.platform}</pre>
+              </li>
+              <li>
+                RestartPolicy:{" "}
+                <pre class={tw`inline`}>{data.restartPolicy.name}</pre>
+              </li>
+              <li>
+                MaximumRetryCount:{" "}
+                <pre class={tw`inline`}>
+                  {data.restartPolicy.maximumRetryCount}
+                </pre>
+              </li>
+              <li>
+                CPUCount: <pre class={tw`inline`}>{data.cpuCount}</pre>
+              </li>
+              <li>
+                CPUPercent: <pre class={tw`inline`}>{data.cpuPercent}</pre>
+              </li>
+              {data.networkSettings.networks.map((network) => (
+                network.ipAddress
+                  ? (
+                    <li>
+                      {network.name}:{" "}
+                      <pre class={tw`inline`}>
+                        IP: {network.ipAddress} Gateway: {network.gateway}
+                      </pre>
+                    </li>
+                  )
+                  : null
+              ))}
             </ul>
           </a>
         </div>

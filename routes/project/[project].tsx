@@ -5,6 +5,7 @@ import { tw } from "../../utils/twind.ts";
 
 import Header from "../../components/Header.tsx";
 import IconInfo from "../../components/IconInfo.tsx";
+import Button from "../../components/Button.tsx";
 
 const decoder = new TextDecoder();
 
@@ -85,7 +86,27 @@ export default function Project(
     <div>
       <Header />
 
-      <h1 class={tw`mt-7 ml-6 text-lg`}>{params.project}:</h1>
+      <div class={tw`relative mx-6 my-6`}>
+        <h1 class={tw`text-lg`}>{params.project}:</h1>
+        <div class={tw`absolute right-0 top-0 flex`}>
+          <div class={tw`ml-2`}>
+            <Button>
+              Start
+            </Button>
+          </div>
+          <div class={tw`ml-2`}>
+            <Button>
+              Stop
+            </Button>
+          </div>
+          <div class={tw`ml-2`}>
+            <Button>
+              Restart
+            </Button>
+          </div>
+        </div>
+      </div>
+
       <div class={tw`flex flex-wrap mx-3`}>
         {data.map((container) => <Container container={container} />)}
       </div>
