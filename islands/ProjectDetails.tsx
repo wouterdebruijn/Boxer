@@ -9,37 +9,67 @@ import Spinner from "../components/Spinner.tsx";
 
 const decoder = new TextDecoder();
 
+interface ActionButton {
+  label: string;
+  action: () => void | Promise<void>;
+  loading?: boolean;
+}
+
 export default function ProjectDetails(props: { project: string }) {
   const [containers, setContainers] = useState([]);
-  const [restartLoading, setRestartLoading] = useState(false);
 
-  async function stopProject() {
-    await fetch(`/api/project`, {
-      method: "PUT",
-      body: JSON.stringify({ state: "stop", project: props.project }),
-      headers: { "Content-Type": "application/json" },
-    });
-    await fetchContainers(props.project);
-  }
+  const [actionButtons, setActionButtons] = useState<ActionButton[]>([
+    {
+      label: "Start",
+      action: async () => {
+        setButtonLoading("Start", true);
+        await fetch(`/api/project`, {
+          method: "PUT",
+          body: JSON.stringify({ state: "start", project: props.project }),
+          headers: { "Content-Type": "application/json" },
+        });
+        await fetchContainers(props.project);
+        setButtonLoading("Start", false);
+      },
+      loading: false,
+    },
+    {
+      label: "Stop",
+      action: async () => {
+        setButtonLoading("Stop", true);
+        await fetch(`/api/project`, {
+          method: "PUT",
+          body: JSON.stringify({ state: "stop", project: props.project }),
+          headers: { "Content-Type": "application/json" },
+        });
+        await fetchContainers(props.project);
+        setButtonLoading("Stop", false);
+      },
+      loading: false,
+    },
+    {
+      label: "Restart",
+      action: async () => {
+        setButtonLoading("Restart", true);
+        await fetch(`/api/project`, {
+          method: "PUT",
+          body: JSON.stringify({ state: "restart", project: props.project }),
+          headers: { "Content-Type": "application/json" },
+        });
+        await fetchContainers(props.project);
+        setButtonLoading("Restart", false);
+      },
+      loading: false,
+    },
+  ]);
 
-  async function startProject() {
-    await fetch(`/api/project`, {
-      method: "PUT",
-      body: JSON.stringify({ state: "start", project: props.project }),
-      headers: { "Content-Type": "application/json" },
-    });
-    await fetchContainers(props.project);
-  }
-
-  async function restartProject() {
-    setRestartLoading(true);
-    await fetch(`/api/project`, {
-      method: "PUT",
-      body: JSON.stringify({ state: "restart", project: props.project }),
-      headers: { "Content-Type": "application/json" },
-    });
-    await fetchContainers(props.project);
-    setRestartLoading(false);
+  function setButtonLoading(label: string, loading: boolean) {
+    const buttons = [...actionButtons];
+    const button = buttons.find(b => b.label === label);
+    if (button)
+      button.loading = loading;
+      
+    setActionButtons(buttons);
   }
 
   async function fetchContainers(
@@ -67,26 +97,20 @@ export default function ProjectDetails(props: { project: string }) {
       <div class={tw`relative mx-6 my-6`}>
         <h1 class={tw`text-lg`}>{props.project ?? ""}:</h1>
         <div class={tw`absolute right-0 top-0 flex`}>
-          <div class={tw`ml-2`}>
-            <Button onClick={() => startProject()}>
-              Start
-            </Button>
-          </div>
-          <div class={tw`ml-2`}>
-            <Button onClick={() => stopProject()}>
-              Stop
-            </Button>
-          </div>
-          <div class={tw`ml-2`}>
-            <Button onClick={() => restartProject()}>
-              Restart
-              {restartLoading && (
-                <span class={tw`ml-2`}>
-                  <Spinner />
-                </span>
-              )}
-            </Button>
-          </div>
+          {actionButtons.map((button) => (
+            <div class={tw`ml-2`}>
+              <Button
+                onClick={button.action}
+              >
+                {button.label}
+                {button.loading && (
+                  <span class={tw`ml-2`}>
+                    <Spinner />
+                  </span>
+                )}
+              </Button>
+            </div>
+          ))}
         </div>
       </div>
 
