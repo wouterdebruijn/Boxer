@@ -2,7 +2,9 @@
 import { h } from "preact";
 import { tw } from "../utils/twind.ts";
 
-export default function Spinner({ size = 16, color = "currentColor" }: { size?: number, color?: string }) {
+export default function Spinner(
+  { size = 16, color = "currentColor" }: { size?: number; color?: string },
+) {
   return (
     <svg
       class={tw`inline animate-spin`}

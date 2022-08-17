@@ -12,7 +12,7 @@ export default function Header() {
           class={tw`h-20 p-2`}
         />
       </a>
-        <h1 class={tw`text-xl pl-2`}>Docker Compose Management</h1>
+      <h1 class={tw`text-xl pl-2`}>Docker Compose Management</h1>
     </header>
   );
 }

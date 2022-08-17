@@ -93,12 +93,13 @@ export default function ProjectDetails(props: { project: string }) {
     fetchContainers(props.project);
   }, [props.project]);
 
-  if (containers.length === 0)
+  if (containers.length === 0) {
     return (
       <div class={tw`p-10 text-yellow-400 flex items-center justify-center`}>
         <Spinner size={24} />
       </div>
-    )
+    );
+  }
 
   return (
     <div>
