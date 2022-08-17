@@ -65,10 +65,11 @@ export default function ProjectDetails(props: { project: string }) {
 
   function setButtonLoading(label: string, loading: boolean) {
     const buttons = [...actionButtons];
-    const button = buttons.find(b => b.label === label);
-    if (button)
+    const button = buttons.find((b) => b.label === label);
+    if (button) {
       button.loading = loading;
-      
+    }
+
     setActionButtons(buttons);
   }
 
@@ -91,6 +92,13 @@ export default function ProjectDetails(props: { project: string }) {
   useEffect(() => {
     fetchContainers(props.project);
   }, [props.project]);
+
+  if (containers.length === 0)
+    return (
+      <div class={tw`p-10 text-yellow-400 flex items-center justify-center`}>
+        <Spinner size={24} />
+      </div>
+    )
 
   return (
     <div>
