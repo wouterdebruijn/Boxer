@@ -2,12 +2,11 @@
 import { h } from "preact";
 import { tw } from "../utils/twind.ts";
 
-export default function Spinner({ size = 16 }: { size?: number }) {
+export default function Spinner({ size = 16, color = "currentColor" }: { size?: number, color?: string }) {
   return (
     <svg
-      class={tw`inline animate-spin text-white`}
+      class={tw`inline animate-spin`}
       xmlns="http://www.w3.org/2000/svg"
-      fill="none"
       viewBox="0 0 24 24"
       height={size}
       width={size}
@@ -19,6 +18,7 @@ export default function Spinner({ size = 16 }: { size?: number }) {
         r="10"
         stroke="currentColor"
         stroke-width="4"
+        fill="none"
       >
       </circle>
       <path
