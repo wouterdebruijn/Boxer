@@ -47,7 +47,7 @@ async function fetchContainers(
   // Get the output of the command
   const output = JSON.parse(decoder.decode(await process.output()));
 
-  const containers = output.map((container: Record<string, any>) => {
+  const containers = output.map((container: Record<string, unknown>) => {
     return {
       id: container?.ID,
       name: container?.Name,
@@ -56,9 +56,9 @@ async function fetchContainers(
       service: container?.Service,
       state: container?.State,
       health: container?.Health,
-      exitCode: +container?.ExitCode,
-      publishers: container?.Publishers?.map(
-        (port: Record<string, string>) => {
+      exitCode: +<string> container?.ExitCode,
+      publishers: (<Array<Record<string, string>>> container?.Publishers)?.map(
+        (port) => {
           return {
             url: port?.URL,
             targetPort: +port?.TargetPort,
