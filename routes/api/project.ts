@@ -11,13 +11,19 @@ export const handler: Handlers<DockerContainer[] | null> = {
       return new Response();
     }
 
+    const acceptedStates = ["start", "stop", "restart"];
+
+    if (!acceptedStates.includes(body.state)) {
+      return new Response();
+    }
+
     const process = Deno.run({
       cmd: [
         "docker",
         "compose",
         "-p",
         body.project,
-        body.state
+        body.state,
       ],
       stderr: "piped",
       stdout: "piped",

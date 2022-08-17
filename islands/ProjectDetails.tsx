@@ -5,20 +5,41 @@ import { tw } from "@twind";
 import Button from "../components/Button.tsx";
 import { DockerContainer } from "../routes/api/containers/[project].ts";
 import IconInfo from "../components/IconInfo.tsx";
+import Spinner from "../components/Spinner.tsx";
 
 const decoder = new TextDecoder();
 
 export default function ProjectDetails(props: { project: string }) {
   const [containers, setContainers] = useState([]);
+  const [restartLoading, setRestartLoading] = useState(false);
 
   async function stopProject() {
-    await fetch(`/api/project`, { method: "PUT", body: JSON.stringify({ state: "stop", project: props.project }), headers: { "Content-Type": "application/json" } });
+    await fetch(`/api/project`, {
+      method: "PUT",
+      body: JSON.stringify({ state: "stop", project: props.project }),
+      headers: { "Content-Type": "application/json" },
+    });
     await fetchContainers(props.project);
   }
 
   async function startProject() {
-    await fetch(`/api/project`, { method: "PUT", body: JSON.stringify({ state: "start", project: props.project }), headers: { "Content-Type": "application/json" } });
+    await fetch(`/api/project`, {
+      method: "PUT",
+      body: JSON.stringify({ state: "start", project: props.project }),
+      headers: { "Content-Type": "application/json" },
+    });
     await fetchContainers(props.project);
+  }
+
+  async function restartProject() {
+    setRestartLoading(true);
+    await fetch(`/api/project`, {
+      method: "PUT",
+      body: JSON.stringify({ state: "restart", project: props.project }),
+      headers: { "Content-Type": "application/json" },
+    });
+    await fetchContainers(props.project);
+    setRestartLoading(false);
   }
 
   async function fetchContainers(
@@ -57,8 +78,13 @@ export default function ProjectDetails(props: { project: string }) {
             </Button>
           </div>
           <div class={tw`ml-2`}>
-            <Button>
+            <Button onClick={() => restartProject()}>
               Restart
+              {restartLoading && (
+                <span class={tw`ml-2`}>
+                  <Spinner />
+                </span>
+              )}
             </Button>
           </div>
         </div>
