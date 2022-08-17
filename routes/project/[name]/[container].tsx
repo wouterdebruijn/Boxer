@@ -147,7 +147,7 @@ export default function Home({ data }: PageProps<Container | null>) {
       <div class={tw`flex flex-wrap mx-3`}>
         <div class={tw`w-full`}>
           <a
-            class={tw`bg-white shadow-md rounded-xl p-7 m-2 bg-clip-padding border border-gray-200 cursor-pointer block`}
+            class={tw`bg-white shadow-md rounded-xl p-7 m-2 bg-clip-padding border border-gray-200 block`}
           >
             <small class={tw`float-right text-gray-500 font-thin`}>
               {data.id}
