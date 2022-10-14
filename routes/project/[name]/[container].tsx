@@ -1,8 +1,3 @@
-// deno-lint-ignore-file no-explicit-any
-
-/** @jsx h */
-import { h } from "preact";
-import { tw } from "@twind";
 import { Handlers, PageProps } from "$fresh/server.ts";
 
 import Header from "../../../components/Header.tsx";
@@ -143,110 +138,100 @@ export default function Home({ data }: PageProps<Container | null>) {
     <div>
       <Header />
 
-      <h1 class={tw`mt-7 ml-6 text-lg`}>CONTAINER:</h1>
-      <div class={tw`flex flex-wrap mx-3`}>
-        <div class={tw`w-full`}>
-          <a
-            class={tw`bg-white shadow-md rounded-xl p-7 m-2 bg-clip-padding border border-gray-200 block`}
-          >
-            <small class={tw`float-right text-gray-500 font-thin`}>
+      <h1 class="mt-7 ml-6 text-lg">CONTAINER:</h1>
+      <div class="flex flex-wrap mx-3">
+        <div class="w-full">
+          <a class="bg-white shadow-md rounded-xl p-7 m-2 bg-clip-padding border border-gray-200 block">
+            <small class="float-right text-gray-500 font-thin">
               {data.id}
             </small>
-            <h1 class={tw`pb-1`}>
+            <h1 class="pb-1">
               <span>Name:</span> {data.name}
             </h1>
-            <ul class={tw`font-thin text-sm space-y-2 break-all`}>
+            <ul class="font-thin text-sm space-y-2 break-all">
               <li>
-                Image: <pre class={tw`inline`}>{data.config.image}</pre>
+                Image: <pre class="inline">{data.config.image}</pre>
               </li>
               <li>
                 Created:{" "}
-                <pre class={tw`inline`}>{data.created.toLocaleString()}</pre>
+                <pre class="inline">{data.created.toLocaleString()}</pre>
               </li>
               <li>
-                Path: <pre class={tw`inline`}>{data.path}</pre>
+                Path: <pre class="inline">{data.path}</pre>
               </li>
               <li>
-                Args: <pre class={tw`inline`}>{data.args.join(", ")}</pre>
+                Args: <pre class="inline">{data.args.join(", ")}</pre>
               </li>
               <li>
-                State: <pre class={tw`inline`}>{data.state.status}</pre>
+                State: <pre class="inline">{data.state.status}</pre>
               </li>
               <li>
-                Running:{" "}
-                <pre class={tw`inline`}>
+                Running: <pre class="inline">
                   {data.state.running ? "Yes" : "No"}
                 </pre>
               </li>
               <li>
                 Paused:{" "}
-                <pre class={tw`inline`}>{data.state.paused ? "Yes" : "No"}</pre>
+                <pre class="inline">{data.state.paused ? "Yes" : "No"}</pre>
               </li>
               <li>
-                Restarting:{" "}
-                <pre class={tw`inline`}>
+                Restarting: <pre class="inline">
                   {data.state.restarting ? "Yes" : "No"}
                 </pre>
               </li>
               <li>
-                OOMKilled:{" "}
-                <pre class={tw`inline`}>
+                OOMKilled: <pre class="inline">
                   {data.state.oomKilled ? "Yes" : "No"}
                 </pre>
               </li>
               <li>
-                Dead:{" "}
-                <pre class={tw`inline`}>{data.state.dead ? "Yes" : "No"}</pre>
+                Dead: <pre class="inline">{data.state.dead ? "Yes" : "No"}</pre>
               </li>
               <li>
-                PID: <pre class={tw`inline`}>{data.state.pid}</pre>
+                PID: <pre class="inline">{data.state.pid}</pre>
               </li>
               <li>
-                ExitCode: <pre class={tw`inline`}>{data.state.exitCode}</pre>
+                ExitCode: <pre class="inline">{data.state.exitCode}</pre>
               </li>
               <li>
-                Error: <pre class={tw`inline`}>{data.state.error}</pre>
+                Error: <pre class="inline">{data.state.error}</pre>
               </li>
               <li>
-                StartedAt:{" "}
-                <pre class={tw`inline`}>
+                StartedAt: <pre class="inline">
                   {data.state.startedAt.toLocaleString()}
                 </pre>
               </li>
               <li>
-                FinishedAt:{" "}
-                <pre class={tw`inline`}>
+                FinishedAt: <pre class="inline">
                   {data.state.finishedAt.toLocaleString()}
                 </pre>
               </li>
               <li>
-                RestartCount: <pre class={tw`inline`}>{data.restartCount}</pre>
+                RestartCount: <pre class="inline">{data.restartCount}</pre>
               </li>
               <li>
-                Platform: <pre class={tw`inline`}>{data.platform}</pre>
+                Platform: <pre class="inline">{data.platform}</pre>
               </li>
               <li>
                 RestartPolicy:{" "}
-                <pre class={tw`inline`}>{data.restartPolicy.name}</pre>
+                <pre class="inline">{data.restartPolicy.name}</pre>
               </li>
               <li>
-                MaximumRetryCount:{" "}
-                <pre class={tw`inline`}>
+                MaximumRetryCount: <pre class="inline">
                   {data.restartPolicy.maximumRetryCount}
                 </pre>
               </li>
               <li>
-                CPUCount: <pre class={tw`inline`}>{data.cpuCount}</pre>
+                CPUCount: <pre class="inline">{data.cpuCount}</pre>
               </li>
               <li>
-                CPUPercent: <pre class={tw`inline`}>{data.cpuPercent}</pre>
+                CPUPercent: <pre class="inline">{data.cpuPercent}</pre>
               </li>
               {data.networkSettings.networks.map((network) => (
                 network.ipAddress
                   ? (
                     <li>
-                      {network.name}:{" "}
-                      <pre class={tw`inline`}>
+                      {network.name}: <pre class="inline">
                         IP: {network.ipAddress} Gateway: {network.gateway}
                       </pre>
                     </li>

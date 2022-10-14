@@ -1,5 +1,3 @@
-/** @jsx h */
-import { h } from "preact";
 import { PageProps } from "$fresh/server.ts";
 import Header from "../../components/Header.tsx";
 import { DockerContainer } from "../api/containers/[project].ts";

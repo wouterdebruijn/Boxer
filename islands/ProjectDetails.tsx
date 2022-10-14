@@ -1,9 +1,7 @@
-/** @jsx h */
-import { h } from "preact";
 import { useEffect, useState } from "preact/hooks";
-import { tw } from "@twind";
-import Button from "../components/Button.tsx";
 import { DockerContainer } from "../routes/api/containers/[project].ts";
+
+import Button from "../components/Button.tsx";
 import IconInfo from "../components/IconInfo.tsx";
 import Spinner from "../components/Spinner.tsx";
 
@@ -95,7 +93,7 @@ export default function ProjectDetails(props: { project: string }) {
 
   if (containers.length === 0) {
     return (
-      <div class={tw`p-10 text-yellow-400 flex items-center justify-center`}>
+      <div class="p-10 text-yellow-400 flex items-center justify-center">
         <Spinner size={24} />
       </div>
     );
@@ -103,17 +101,17 @@ export default function ProjectDetails(props: { project: string }) {
 
   return (
     <div>
-      <div class={tw`relative mx-6 my-6`}>
-        <h1 class={tw`text-lg`}>{props.project ?? ""}:</h1>
-        <div class={tw`absolute right-0 top-0 flex`}>
+      <div class="relative mx-6 my-6">
+        <h1 class="text-lg">{props.project ?? ""}:</h1>
+        <div class="absolute right-0 top-0 flex">
           {actionButtons.map((button) => (
-            <div class={tw`ml-2`}>
+            <div class="ml-2">
               <Button
                 onClick={button.action}
               >
                 {button.label}
                 {button.loading && (
-                  <span class={tw`ml-2`}>
+                  <span class="ml-2">
                     <Spinner />
                   </span>
                 )}
@@ -123,7 +121,7 @@ export default function ProjectDetails(props: { project: string }) {
         </div>
       </div>
 
-      <div class={tw`flex flex-wrap mx-3`}>
+      <div class="flex flex-wrap mx-3">
         {containers.map((container) => <Container container={container} />)}
       </div>
     </div>
@@ -132,30 +130,26 @@ export default function ProjectDetails(props: { project: string }) {
 
 function Container({ container }: { container: DockerContainer }) {
   return (
-    <div class={tw`w-full xl:w-1/2`}>
+    <div class="w-full xl:w-1/2">
       <a
-        class={tw`bg-white shadow-md rounded-xl p-7 m-2 bg-clip-padding border border-gray-200 block`}
+        class="bg-white shadow-md rounded-xl p-7 m-2 bg-clip-padding border border-gray-200 block"
         href={`/project/${container.project}/${container.id}`}
       >
-        <p class={tw`float-right font-thin`}>
+        <p class="float-right font-thin">
           <IconInfo /> {container.state}
         </p>
-        <h1 class={tw`pb-1`}>
+        <h1 class="pb-1">
           Container: {container.name} {container.health ? "(healthy)" : ""}
         </h1>
         <div>
-          <small
-            class={tw`text-gray-500 font-thin leading-tight block truncate`}
-          >
+          <small class="text-gray-500 font-thin leading-tight block truncate">
             ID: {container.id}
           </small>
-          <small
-            class={tw`text-gray-500 font-thin leading-tight block truncate`}
-          >
+          <small class="text-gray-500 font-thin leading-tight block truncate">
             Command: {container.command}
           </small>
         </div>
-        <div class={tw`float-right`}>
+        <div class="float-right">
         </div>
       </a>
     </div>

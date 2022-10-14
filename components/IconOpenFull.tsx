@@ -1,7 +1,3 @@
-/** @jsx h */
-import { h } from "preact";
-import { tw } from "../utils/twind.ts";
-
 export default function IconOpenFull({ size = 16 }: { size?: number }) {
   return (
     <svg
@@ -9,7 +5,7 @@ export default function IconOpenFull({ size = 16 }: { size?: number }) {
       viewBox="0 0 48 48"
       height={size}
       width={size}
-      class={tw`inline`}
+      class="inline"
     >
       <path d="M6 42V27h3v9.9L36.9 9H27V6h15v15h-3v-9.9L11.1 39H21v3Z" />
     </svg>
