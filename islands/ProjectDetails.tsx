@@ -2,8 +2,8 @@ import { useEffect, useState } from "preact/hooks";
 import { DockerContainer } from "../routes/api/containers/[project].ts";
 
 import Button from "../components/Button.tsx";
-import IconInfo from "../components/IconInfo.tsx";
-import Spinner from "../components/Spinner.tsx";
+import IconInfo from "../components/icons/IconInfo.tsx";
+import Spinner from "../components/icons/Spinner.tsx";
 
 const decoder = new TextDecoder();
 

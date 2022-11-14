@@ -47,7 +47,7 @@ interface Container {
   };
 }
 
-export const handler: Handlers<any> = {
+export const handler: Handlers<Container | null> = {
   async GET(_, ctx) {
     const process = Deno.run({
       cmd: [

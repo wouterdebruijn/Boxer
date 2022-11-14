@@ -2,7 +2,7 @@ import { Handlers, PageProps } from "$fresh/server.ts";
 import { useState } from "preact/hooks";
 
 import Header from "../components/Header.tsx";
-import IconInfo from "../components/IconInfo.tsx";
+import IconInfo from "../components/icons/IconInfo.tsx";
 
 const decoder = new TextDecoder();
 
