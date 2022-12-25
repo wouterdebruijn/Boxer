@@ -1,4 +1,4 @@
-FROM denoland/deno:bin-1.24.1 AS deno
+FROM denoland/deno:bin-1.28.3 AS deno
 FROM ubuntu:latest
 ARG DEBIAN_FRONTEND=noninteractive
 
@@ -31,5 +31,5 @@ RUN useradd -m -s /bin/bash boxer
 RUN usermod -aG docker boxer
 
 ADD . .
-RUN su boxer -c "deno cache main.ts"
+RUN deno cache --lock-write main.ts
 CMD ["deno", "run", "--allow-env", "--allow-net","--allow-read", "--allow-run", "main.ts"]
