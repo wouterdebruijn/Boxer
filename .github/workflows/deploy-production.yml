@@ -8,31 +8,8 @@ env:
   APPLICATION_NAME: "boxer"
 
 jobs:
-  quality:
-    name: Quality
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout sources
-        uses: actions/checkout@v2
-
-      - name: Setup latest Deno version
-        uses: denolib/setup-deno@v2
-        with:
-          deno-version: v1.x
-
-      - name: Run Deno fmt
-        run: deno fmt --check
-
-      - name: Run Deno lint
-        run: deno lint
-
   deploy:
     runs-on: ubuntu-latest
-    needs: [quality]
-    strategy:
-      matrix:
-        node-version: [18.x]
     steps:
     - uses: actions/checkout@v3
 
