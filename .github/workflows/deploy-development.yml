@@ -65,9 +65,3 @@ jobs:
           docker load < "${{ env.APPLICATION_NAME }}/${{ env.APPLICATION_NAME }}.tar.gz"
           docker tag "${{ env.APPLICATION_NAME }}:${{ steps.tag.outputs.tag }}" "${{ env.APPLICATION_NAME }}:latest"
           docker compose --project-directory "${{ env.APPLICATION_NAME }}" up -d
-
-    - name: Upload image as artifact
-      uses: actions/upload-artifact@v3
-      with:
-        name: ${{ env.APPLICATION_NAME }}-${{ steps.tag.outputs.tag }}.tar.gz
-        path: ${{ env.APPLICATION_NAME }}.tar.gz

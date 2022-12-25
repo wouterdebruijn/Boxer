@@ -8,8 +8,28 @@ env:
   APPLICATION_NAME: "boxer"
 
 jobs:
-  build:
+  quality:
+    name: Quality
     runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v2
+
+      - name: Setup latest Deno version
+        uses: denolib/setup-deno@v2
+        with:
+          deno-version: v1.x
+
+      - name: Run Deno fmt
+        run: deno fmt --check
+
+      - name: Run Deno lint
+        run: deno lint
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [quality]
     strategy:
       matrix:
         node-version: [18.x]
@@ -25,21 +45,6 @@ jobs:
 
     - name: Export Docker image to archive
       run: docker save --output "$APPLICATION_NAME.tar.gz" $APPLICATION_NAME:${{ steps.tag.outputs.tag }}
-
-    - uses: actions/upload-artifact@v3
-      with:
-        name: image
-        path: ${{ env.APPLICATION_NAME }}.tar.gz
-
-  deploy:
-    runs-on: ubuntu-latest
-    needs: [build]
-    steps:
-    - name: Download artifact
-      uses: actions/download-artifact@main
-      with:
-        name: image
-        path: ${{ env.APPLICATION_NAME }}.tar.gz
 
     - name: Copy image to own infrastructure
       uses: appleboy/scp-action@master
