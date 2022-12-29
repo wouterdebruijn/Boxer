@@ -17,6 +17,9 @@ Then boxer can be run directly or inside of a docker container.
 
 ### Docker
 
+**Current version is only for development! Application is currently run as root
+user.**
+
 ```bash
 docker run -p 8000:8000 -v /var/run/docker.sock:/var/run/docker.sock boxer
 ```
