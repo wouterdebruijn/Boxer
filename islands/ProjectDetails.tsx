@@ -11,6 +11,34 @@ interface ActionButton {
   loading?: boolean;
 }
 
+function Container({ container }: { container: ProjectContainer }) {
+  return (
+    <div class="w-full xl:w-1/2">
+      <a
+        class="bg-white shadow-md rounded-xl p-7 m-2 bg-clip-padding border border-gray-200 block"
+        href={`/project/${container.project}/${container.id}`}
+      >
+        <p class="float-right font-thin">
+          <IconInfo /> {container.state}
+        </p>
+        <h1 class="pb-1">
+          Container: {container.name} {container.health ? "(healthy)" : ""}
+        </h1>
+        <div>
+          <small class="text-gray-500 font-thin leading-tight block truncate">
+            ID: {container.id}
+          </small>
+          <small class="text-gray-500 font-thin leading-tight block truncate">
+            Command: {container.command}
+          </small>
+        </div>
+        <div class="float-right">
+        </div>
+      </a>
+    </div>
+  );
+}
+
 export default function ProjectDetails(props: { project: string }) {
   const [containers, setContainers] = useState([]);
 
@@ -122,34 +150,6 @@ export default function ProjectDetails(props: { project: string }) {
       <div class="flex flex-wrap mx-3">
         {containers.map((container) => <Container container={container} />)}
       </div>
-    </div>
-  );
-}
-
-function Container({ container }: { container: ProjectContainer }) {
-  return (
-    <div class="w-full xl:w-1/2">
-      <a
-        class="bg-white shadow-md rounded-xl p-7 m-2 bg-clip-padding border border-gray-200 block"
-        href={`/project/${container.project}/${container.id}`}
-      >
-        <p class="float-right font-thin">
-          <IconInfo /> {container.state}
-        </p>
-        <h1 class="pb-1">
-          Container: {container.name} {container.health ? "(healthy)" : ""}
-        </h1>
-        <div>
-          <small class="text-gray-500 font-thin leading-tight block truncate">
-            ID: {container.id}
-          </small>
-          <small class="text-gray-500 font-thin leading-tight block truncate">
-            Command: {container.command}
-          </small>
-        </div>
-        <div class="float-right">
-        </div>
-      </a>
     </div>
   );
 }
