@@ -1,11 +1,9 @@
 import { useEffect, useState } from "preact/hooks";
-import { DockerContainer } from "../routes/api/containers/[project].ts";
+import { ProjectContainer } from "../controllers/ContainerController.ts";
 
 import Button from "../components/Button.tsx";
 import IconInfo from "../components/icons/IconInfo.tsx";
 import Spinner from "../components/icons/Spinner.tsx";
-
-const decoder = new TextDecoder();
 
 interface ActionButton {
   label: string;
@@ -128,7 +126,7 @@ export default function ProjectDetails(props: { project: string }) {
   );
 }
 
-function Container({ container }: { container: DockerContainer }) {
+function Container({ container }: { container: ProjectContainer }) {
   return (
     <div class="w-full xl:w-1/2">
       <a
