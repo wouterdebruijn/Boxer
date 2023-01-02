@@ -3,44 +3,14 @@ import { useState } from "preact/hooks";
 
 import Header from "../components/Header.tsx";
 import IconInfo from "../components/icons/IconInfo.tsx";
-
-const decoder = new TextDecoder();
-
-interface ComposeProject {
-  name: string;
-  state: string;
-  configPath: string;
-}
+import {
+  ComposeProject,
+  ProjectController,
+} from "../controllers/ProjectController.ts";
 
 export const handler: Handlers<ComposeProject[]> = {
   async GET(_, ctx) {
-    const process = Deno.run({
-      cmd: ["docker", "compose", "ls", "-a", "--format", "json"],
-      stderr: "piped",
-      stdout: "piped",
-    });
-    const status = await process.status();
-
-    if (!status.success) {
-      console.error(decoder.decode(await process.stderrOutput()));
-      return new Response("Command returned an error.");
-    }
-
-    // Get the output of the command
-    const output = JSON.parse(decoder.decode(await process.output()));
-
-    // Create clean objects from the JSON output.
-    const projects: ComposeProject[] = output.map(
-      (project: Record<string, never>) => {
-        return {
-          name: project?.Name,
-          state: project?.Status,
-          configPath: project?.ConfigFiles,
-        };
-      },
-    );
-
-    return ctx.render(projects);
+    return ctx.render(await ProjectController.get());
   },
 };
 
