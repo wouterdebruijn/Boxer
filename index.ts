@@ -1,20 +1,14 @@
 import { Application } from "https://deno.land/x/oak@v11.1.0/mod.ts";
-
-const DockerEventWorker = new Worker(
-  new URL("worker.ts", import.meta.url).href,
-  { type: "module" },
-);
-
-const events: Record<string, unknown>[] = [];
-
-DockerEventWorker.addEventListener("message", (event) => {
-  events.push(event.data);
-});
+import { DockerEventBus } from "./DockerEventBus.ts";
 
 const app = new Application();
+const dockerEventBus = new DockerEventBus();
 
 app.use((ctx) => {
-  ctx.response.body = events;
+  ctx.response.body = dockerEventBus.getEvents();
 });
 
-await app.listen({ port: 8000 });
+Promise.all([
+    dockerEventBus.listen(),
+    app.listen({ port: 8000 }),
+]);
