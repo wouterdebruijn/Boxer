@@ -2,132 +2,16 @@ import { Handlers, PageProps } from "$fresh/server.ts";
 
 import Header from "../../../components/Header.tsx";
 
-const decoder = new TextDecoder();
-
-interface DockerNetwork {
-  name: string;
-  ipAddress: string;
-  networkId: string;
-  gateway: string;
-}
-
-interface Container {
-  id: string;
-  created: Date;
-  path: string;
-  args: string[];
-  state: {
-    status: string;
-    running: boolean;
-    paused: boolean;
-    restarting: boolean;
-    oomKilled: boolean;
-    dead: boolean;
-    pid: number;
-    exitCode: number;
-    error: string;
-    startedAt: Date;
-    finishedAt: Date;
-  };
-  image: string;
-  name: string;
-  restartCount: number;
-  platform: string;
-  restartPolicy: {
-    name: string;
-    maximumRetryCount: number;
-  };
-  cpuCount: number;
-  cpuPercent: number;
-  config: {
-    image: string;
-  };
-  networkSettings: {
-    networks: DockerNetwork[];
-  };
-}
+import {
+  Container,
+  ContainerController,
+} from "../../../controllers/ContainerController.ts";
 
 export const handler: Handlers<Container | null> = {
   async GET(_, ctx) {
-    const process = Deno.run({
-      cmd: [
-        "docker",
-        "inspect",
-        ctx.params.container,
-        "--format",
-        "{{json .}}",
-      ],
-      stderr: "piped",
-      stdout: "piped",
-    });
-    const status = await process.status();
-
-    if (!status.success) {
-      console.error(
-        `Error while executing process: ${process.pid}`,
-        decoder.decode(await process.stderrOutput()),
-      );
-      return ctx.render(null);
-    }
-
-    // Get the output of the command
-    const output = JSON.parse(decoder.decode(await process.output()));
-
-    // Create clean objects from the JSON output.
-    const container: Container = {
-      id: output.Id,
-      created: new Date(output.Created),
-      path: output.Path,
-      args: output.Args,
-      state: {
-        status: output.State.Status,
-        running: output.State.Running,
-        paused: output.State.Paused,
-        restarting: output.State.Restarting,
-        oomKilled: output.State.OOMKilled,
-        dead: output.State.Dead,
-        pid: output.State.Pid,
-        exitCode: output.State.ExitCode,
-        error: output.State.Error,
-        startedAt: new Date(output.State.StartedAt),
-        finishedAt: new Date(output.State.FinishedAt),
-      },
-      image: output.Image,
-      config: {
-        image: output.Config.Image,
-      },
-      cpuCount: output.HostConfig.CpuCount,
-      cpuPercent: output.HostConfig.CpuPercent,
-      name: output.Name,
-      restartCount: output.RestartCount,
-      platform: output.Platform,
-      restartPolicy: {
-        name: output.HostConfig.RestartPolicy.Name,
-        maximumRetryCount: output.HostConfig.RestartPolicy.MaximumRetryCount,
-      },
-      networkSettings: {
-        networks: formatNetworks(output.NetworkSettings.Networks),
-      },
-    };
-
-    return ctx.render(container);
+    return ctx.render(await ContainerController.getOne(ctx.params.container));
   },
 };
-
-function formatNetworks(
-  networks: Record<string, Record<string, string>>,
-): DockerNetwork[] {
-  const result: DockerNetwork[] = [];
-  Object.keys(networks).every((key) => {
-    result.push({
-      name: key,
-      ipAddress: networks[key].IPAddress,
-      networkId: networks[key].NetworkID,
-      gateway: networks[key].Gateway,
-    });
-  });
-  return result;
-}
 
 export default function Home({ data }: PageProps<Container | null>) {
   if (!data) {
@@ -138,7 +22,7 @@ export default function Home({ data }: PageProps<Container | null>) {
     <div>
       <Header />
 
-      <h1 class="mt-7 ml-6 text-lg">CONTAINER:</h1>
+      <h1 class="mt-7 ml-6 text-lg">Container:</h1>
       <div class="flex flex-wrap mx-3">
         <div class="w-full">
           <a class="bg-white shadow-md rounded-xl p-7 m-2 bg-clip-padding border border-gray-200 block">

@@ -1,10 +1,10 @@
 import { PageProps } from "$fresh/server.ts";
 import Header from "../../components/Header.tsx";
-import { DockerContainer } from "../api/containers/[project].ts";
+import { ProjectContainer } from "../../controllers/ContainerController.ts";
 import ProjectDetails from "../../islands/ProjectDetails.tsx";
 
 export default function Project(
-  { params }: PageProps<DockerContainer[]>,
+  { params }: PageProps<ProjectContainer[]>,
 ) {
   return (
     <div>
